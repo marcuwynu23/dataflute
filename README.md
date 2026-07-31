@@ -1,6 +1,6 @@
 <div align="center">
 
-# dataserve
+# dataflute
 
 **Expose local data files as read-only REST APIs.**
 
@@ -13,7 +13,7 @@
 
 </div>
 
-`dataserve` is a production-ready, read-only REST API server for local data files.
+`dataflute` is a production-ready, read-only REST API server for local data files.
 Point it at a directory (or a single file) and it exposes each supported dataset as a
 JSON endpoint with filtering, sorting, pagination, field selection, and search — with
 automatic hot-reload when files change.
@@ -40,7 +40,7 @@ interface — no HTTP server changes required.
 Requires Go 1.26+.
 
 ```bash
-make build          # builds bin/dataserve
+make build          # builds bin/dataflute
 make test           # runs all tests with coverage
 make lint           # go vet
 make fmt            # gofmt
@@ -51,7 +51,7 @@ make docker         # docker build
 Or directly:
 
 ```bash
-go build -o dataserve ./cmd/dataserve
+go build -o dataflute ./cmd/dataflute
 ```
 
 ## Usage
@@ -62,7 +62,7 @@ Serve every supported file in a directory. Each file becomes an endpoint named a
 its filename (without extension).
 
 ```bash
-dataserve serve -d ./data
+dataflute serve -d ./data
 ```
 
 Given:
@@ -87,7 +87,7 @@ GET /employees
 Serve one file under a user-defined endpoint.
 
 ```bash
-dataserve serve -f ./users.json -e /employees
+dataflute serve -f ./users.json -e /employees
 ```
 
 ### Flags
@@ -270,7 +270,7 @@ GET /mapping
 {
   "features": ["filter", "sort", "search", "pagination"],
   "limits": { "limit": 50, "page": 100 },
-  "service": "dataserve",
+  "service": "dataflute",
   "version": "1.0.0"
 }
 ```
@@ -293,7 +293,7 @@ Events are debounced to batch bursts, and only changed files are re-parsed.
 ## Architecture
 
 ```
-cmd/dataserve/          CLI entrypoint
+cmd/dataflute/          CLI entrypoint
   main.go
   serve/                serve command + application wiring (run.go)
 internal/
@@ -341,17 +341,17 @@ injection, and keeps all state in injected instances (no global mutable state).
 Multi-stage build, exposes port `8080`, distroless runtime.
 
 ```bash
-docker build -t dataserve .
+docker build -t dataflute .
 
 # Directory mode (mount a directory of datasets)
 docker run --rm -p 8080:8080 \
   -v "$(pwd)/data:/data" \
-  dataserve serve --data /data
+  dataflute serve --data /data
 
 # Single file mode (mount one file)
 docker run --rm -p 8080:8080 \
   -v "$(pwd)/users.json:/users.json" \
-  dataserve serve --file /users.json --endpoint /users
+  dataflute serve --file /users.json --endpoint /users
 ```
 
 ## Development
