@@ -1,4 +1,17 @@
+<div align="center">
+
 # dataserve
+
+**Expose local data files as read-only REST APIs.**
+
+[![Go](https://img.shields.io/badge/Go-1.26%2B-00ADD8?style=flat-square&logo=go&logoColor=white)](https://go.dev)
+[![License](https://img.shields.io/badge/License-MIT-4CAF50?style=flat-square)](LICENSE)
+[![Router: Chi](https://img.shields.io/badge/Router-Chi-2ECC71?style=flat-square)](https://github.com/go-chi/chi)
+[![CLI: Cobra](https://img.shields.io/badge/CLI-Cobra-2C3E50?style=flat-square)](https://github.com/spf13/cobra)
+[![Watcher: fsnotify](https://img.shields.io/badge/Watcher-fsnotify-2980B9?style=flat-square)](https://github.com/fsnotify/fsnotify)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)]()
+
+</div>
 
 `dataserve` is a production-ready, read-only REST API server for local data files.
 Point it at a directory (or a single file) and it exposes each supported dataset as a
