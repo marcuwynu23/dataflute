@@ -57,10 +57,10 @@ func Execute() error {
 
 func init() {
 	flags := serveCmd.Flags()
-	flags.StringVar(&dataDir, "data", "", "Directory containing supported data files")
-	flags.StringVar(&filePath, "file", "", "Serve a single data file")
-	flags.StringVar(&endpoint, "endpoint", "", "Endpoint for the single file (required when using --file)")
-	flags.StringVar(&host, "host", "0.0.0.0", "Host to bind the HTTP server to")
-	flags.IntVar(&port, "port", 8080, "Port to bind the HTTP server to")
-	flags.BoolVar(&pretty, "pretty", false, "Pretty-print JSON responses")
+	flags.StringVarP(&dataDir, "data", "d", "", "Directory containing supported data files")
+	flags.StringVarP(&filePath, "file", "f", "", "Serve a single data file")
+	flags.StringVarP(&endpoint, "endpoint", "e", "", "Endpoint for the single file (required when using --file)")
+	flags.StringVarP(&host, "host", "H", "0.0.0.0", "Host to bind the HTTP server to")
+	flags.IntVarP(&port, "port", "p", 8080, "Port to bind the HTTP server to")
+	flags.BoolVarP(&pretty, "pretty", "P", false, "Pretty-print JSON responses")
 }
