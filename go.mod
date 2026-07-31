@@ -1,4 +1,4 @@
-module github.com/marcuwynu23/dataserve
+module github.com/marcuwynu23/dataflute
 
 go 1.26.1
 
