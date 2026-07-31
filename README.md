@@ -26,14 +26,14 @@ interface — no HTTP server changes required.
 
 - **Two serving modes** — serve a whole directory of datasets or a single file.
 - **Format-agnostic** — datasets are always returned as JSON regardless of source format.
+- **Seven formats built in** — JSON, CSV, TSV, XML, YAML, TOML, and INI, auto-selected by file extension.
 - **Hot reload** — `fsnotify`-based watcher reloads only changed files; no restart needed.
 - **Query features** — filter, sort, search, field selection, and pagination on array datasets.
 - **Read-only** — `POST`/`PUT`/`PATCH`/`DELETE` return `405`.
 - **Built-in endpoints** — `GET /` (metadata), `GET /health`, `GET /metrics`.
 - **Middleware** — recovery, request logging, CORS, timeout, gzip compression, graceful shutdown.
 - **Thread-safe in-memory storage** — `RWMutex`-protected, datasets never re-parsed per request.
-- **Extensible parser registry** — add YAML, CSV, XML, TOML, Excel, SQLite, Parquet, etc.
-  by implementing one interface.
+- **Extensible parser registry** — add Excel, SQLite, Parquet, etc. by implementing one interface.
 
 ## Install & Build
 
@@ -62,7 +62,7 @@ Serve every supported file in a directory. Each file becomes an endpoint named a
 its filename (without extension).
 
 ```bash
-dataserve serve --data ./data
+dataserve serve -d ./data
 ```
 
 Given:
@@ -71,6 +71,7 @@ Given:
 data/
   users.json
   products.json
+  employees.csv
 ```
 
 You get:
@@ -78,6 +79,7 @@ You get:
 ```
 GET /users
 GET /products
+GET /employees
 ```
 
 ### Single file mode
@@ -85,19 +87,19 @@ GET /products
 Serve one file under a user-defined endpoint.
 
 ```bash
-dataserve serve --file ./users.json --endpoint /employees
+dataserve serve -f ./users.json -e /employees
 ```
 
 ### Flags
 
-| Flag        | Description                                            | Default    |
-| ----------- | ------------------------------------------------------ | ---------- |
-| `--data`    | Directory containing supported data files              |            |
-| `--file`    | Serve a single data file                               |            |
-| `--endpoint`| Endpoint for the single file (required with `--file`)  |            |
-| `--host`    | Host to bind the HTTP server to                        | `0.0.0.0`  |
-| `--port`    | Port to bind the HTTP server to                        | `8080`     |
-| `--pretty`  | Pretty-print JSON responses                            | `false`    |
+| Flag            | Short | Description                                           | Default    |
+| --------------- | ----- | ----------------------------------------------------- | ---------- |
+| `--data`        | `-d`  | Directory containing supported data files             |            |
+| `--file`        | `-f`  | Serve a single data file                              |            |
+| `--endpoint`    | `-e`  | Endpoint for the single file (required with `--file`) |            |
+| `--host`        | `-H`  | Host to bind the HTTP server to                       | `0.0.0.0`  |
+| `--port`        | `-p`  | Port to bind the HTTP server to                       | `8080`     |
+| `--pretty`      | `-P`  | Pretty-print JSON responses                           | `false`    |
 
 Exactly one of `--data` or `--file` is required; they cannot be combined. Invalid
 configurations produce clear CLI errors.
@@ -114,8 +116,8 @@ Returns API metadata.
 ```json
 {
   "mode": "directory",
-  "formats": [".json"],
-  "available": ["/config", "/products", "/users"]
+  "formats": [".csv", ".ini", ".json", ".toml", ".tsv", ".xml", ".yaml", ".yml"],
+  "available": ["/app", "/config", "/countries", "/employees", "/mapping", "/products", "/report", "/settings", "/users"]
 }
 ```
 
@@ -196,9 +198,19 @@ GET /users?q=john
 
 ## Supported Formats
 
-The initial release ships with the **JSON** parser. The architecture makes adding
-formats trivial: implement `Parser` and register it. The parser is selected
-automatically by file extension.
+The parser is selected automatically by file extension:
+
+| Format | Extensions        | Notes                                            |
+| ------ | ----------------- | ------------------------------------------------ |
+| JSON   | `.json`           | Numbers preserved as-is via `UseNumber`          |
+| CSV    | `.csv`            | First row is the header; empty cells become null |
+| TSV    | `.tsv`            | Same as CSV with a tab delimiter                 |
+| XML    | `.xml`            | Repeated child elements become arrays of records |
+| YAML   | `.yaml`, `.yml`   |                                                  |
+| TOML   | `.toml`           |                                                  |
+| INI    | `.ini`            | Sections become nested objects                   |
+
+The architecture makes adding formats trivial: implement `Parser` and register it.
 
 ```go
 type Parser interface {
@@ -213,14 +225,59 @@ handlers:
 ```go
 registry := parser.NewRegistry()
 registry.Register(json.New())
-registry.Register(yaml.New()) // future
-registry.Register(csv.New())  // future
+registry.Register(csv.New())
+registry.Register(xml.New())
+registry.Register(yaml.New())
+registry.Register(toml.New())
+registry.Register(ini.New())
 ```
 
-Planned formats that slot in this way: YAML (`.yaml`, `.yml`), CSV (`.csv`), TSV
-(`.tsv`), XML (`.xml`), TOML (`.toml`), INI (`.ini`), Excel (`.xlsx`), SQLite
-(`.db`, `.sqlite`), Parquet (`.parquet`), Feather (`.feather`). Parser-specific
-dependencies are only allowed when implementing those formats.
+### Examples
+
+CSV rows become objects keyed by header, with typed values:
+
+```
+GET /employees?department=Engineering&sort=-salary
+```
+
+```json
+[
+  { "active": true, "department": "Engineering", "id": 3, "name": "Carol", "salary": 110000 },
+  { "active": true, "department": "Engineering", "id": 1, "name": "Alice", "salary": 95000 }
+]
+```
+
+XML files with a single repeated child element become arrays of records:
+
+```
+GET /report
+```
+
+```json
+[
+  { "amount": 12000.5, "id": 1, "name": "Q1 Sales" },
+  { "amount": 9800, "id": 2, "name": "Q2 Sales" }
+]
+```
+
+YAML, TOML, and INI files become objects:
+
+```
+GET /mapping
+```
+
+```json
+{
+  "features": ["filter", "sort", "search", "pagination"],
+  "limits": { "limit": 50, "page": 100 },
+  "service": "dataserve",
+  "version": "1.0.0"
+}
+```
+
+Planned formats that slot in this way: Excel (`.xlsx`), SQLite (`.db`, `.sqlite`),
+Parquet (`.parquet`), Feather (`.feather`). Parser-specific dependencies are only
+allowed when implementing those formats.
 
 ## File Watching
 
@@ -254,7 +311,14 @@ internal/
   metrics/              runtime counters for /metrics
   utils/                query processing (filter, sort, search, fields, page)
   parser/               Parser interface + Registry
+    scalar/             scalar value coercion for tabular formats
     json/               JSON parser
+    csv/                CSV parser
+    tsv/                TSV parser
+    xml/                XML parser
+    yaml/               YAML parser
+    toml/               TOML parser
+    ini/                INI parser
 pkg/data/               sample datasets
 tests/                  end-to-end integration tests
 ```
@@ -262,7 +326,7 @@ tests/                  end-to-end integration tests
 ### Dependency flow
 
 ```
-cmd/serve → service ─→ loader ─→ parser.Registry ─→ parser(json)
+cmd/serve → service ─→ loader ─→ parser.Registry ─→ parser(json, csv, tsv, xml, yaml, toml, ini)
                    └→ storage
                    └→ watcher
                    └→ metrics
@@ -296,6 +360,7 @@ docker run --rm -p 8080:8080 \
 make run                 # serve ./pkg/data on :8080
 curl http://localhost:8080/
 curl "http://localhost:8080/users?country=PH&sort=-id&limit=5"
+curl "http://localhost:8080/employees?department=Engineering&sort=-salary"
 ```
 
 ### Testing

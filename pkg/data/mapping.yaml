@@ -1,0 +1,10 @@
+service: dataserve
+version: 1.0.0
+features:
+  - filter
+  - sort
+  - search
+  - pagination
+limits:
+  page: 100
+  limit: 50

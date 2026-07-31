@@ -16,7 +16,13 @@ import (
 	"github.com/marcuwynu23/dataserve/internal/loader"
 	"github.com/marcuwynu23/dataserve/internal/metrics"
 	"github.com/marcuwynu23/dataserve/internal/parser"
+	csvparser "github.com/marcuwynu23/dataserve/internal/parser/csv"
+	iniparser "github.com/marcuwynu23/dataserve/internal/parser/ini"
 	jsonparser "github.com/marcuwynu23/dataserve/internal/parser/json"
+	tomlparser "github.com/marcuwynu23/dataserve/internal/parser/toml"
+	tsvparser "github.com/marcuwynu23/dataserve/internal/parser/tsv"
+	xmlparser "github.com/marcuwynu23/dataserve/internal/parser/xml"
+	yamlparser "github.com/marcuwynu23/dataserve/internal/parser/yaml"
 	"github.com/marcuwynu23/dataserve/internal/service"
 	"github.com/marcuwynu23/dataserve/internal/storage"
 	"github.com/stretchr/testify/assert"
@@ -34,6 +40,12 @@ func newTestServer(t *testing.T, cfg *config.Config) http.Handler {
 	logger := slog.New(slog.NewTextHandler(io.Discard, nil))
 	reg := parser.NewRegistry()
 	reg.Register(jsonparser.New())
+	reg.Register(csvparser.New())
+	reg.Register(tsvparser.New())
+	reg.Register(xmlparser.New())
+	reg.Register(yamlparser.New())
+	reg.Register(tomlparser.New())
+	reg.Register(iniparser.New())
 
 	ld := loader.New(reg, logger)
 	st := storage.New()
@@ -80,7 +92,7 @@ func TestGetMetadata(t *testing.T) {
 
 	body := decodeBody(t, rec).(map[string]any)
 	assert.Equal(t, "directory", body["mode"])
-	assert.Equal(t, []any{".json"}, body["formats"])
+	assert.Equal(t, []any{".csv", ".ini", ".json", ".toml", ".tsv", ".xml", ".yaml", ".yml"}, body["formats"])
 	assert.Equal(t, []any{"/users"}, body["available"])
 }
 
@@ -107,6 +119,32 @@ func TestGetDataset(t *testing.T) {
 	rec := doRequest(t, h, http.MethodGet, "/users")
 	assert.Equal(t, http.StatusOK, rec.Code)
 	assert.JSONEq(t, usersJSON, rec.Body.String())
+}
+
+func TestGetCsvDataset(t *testing.T) {
+	dir := t.TempDir()
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "employees.csv"),
+		[]byte("id,name,active\n1,Alice,true\n2,Bob,false\n"), 0o644))
+
+	cfg := &config.Config{DataDir: dir, Host: "127.0.0.1", Port: 0}
+	h := newTestServer(t, cfg)
+
+	rec := doRequest(t, h, http.MethodGet, "/employees?active=true")
+	assert.Equal(t, http.StatusOK, rec.Code)
+	assert.JSONEq(t, `[{"active":true,"id":1,"name":"Alice"}]`, rec.Body.String())
+}
+
+func TestGetXmlDataset(t *testing.T) {
+	dir := t.TempDir()
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "report.xml"),
+		[]byte(`<report><item><id>1</id></item><item><id>2</id></item></report>`), 0o644))
+
+	cfg := &config.Config{DataDir: dir, Host: "127.0.0.1", Port: 0}
+	h := newTestServer(t, cfg)
+
+	rec := doRequest(t, h, http.MethodGet, "/report")
+	assert.Equal(t, http.StatusOK, rec.Code)
+	assert.JSONEq(t, `[{"id":1},{"id":2}]`, rec.Body.String())
 }
 
 func TestGetDatasetFilter(t *testing.T) {

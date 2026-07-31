@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report>
+  <item>
+    <id>1</id>
+    <name>Q1 Sales</name>
+    <amount>12000.5</amount>
+  </item>
+  <item>
+    <id>2</id>
+    <name>Q2 Sales</name>
+    <amount>9800</amount>
+  </item>
+  <item>
+    <id>3</id>
+    <name>Q3 Sales</name>
+    <amount>13450</amount>
+  </item>
+</report>

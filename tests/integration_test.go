@@ -17,13 +17,32 @@ import (
 	"github.com/marcuwynu23/dataserve/internal/loader"
 	"github.com/marcuwynu23/dataserve/internal/metrics"
 	"github.com/marcuwynu23/dataserve/internal/parser"
+	csvparser "github.com/marcuwynu23/dataserve/internal/parser/csv"
+	iniparser "github.com/marcuwynu23/dataserve/internal/parser/ini"
 	jsonparser "github.com/marcuwynu23/dataserve/internal/parser/json"
+	tomlparser "github.com/marcuwynu23/dataserve/internal/parser/toml"
+	tsvparser "github.com/marcuwynu23/dataserve/internal/parser/tsv"
+	xmlparser "github.com/marcuwynu23/dataserve/internal/parser/xml"
+	yamlparser "github.com/marcuwynu23/dataserve/internal/parser/yaml"
 	"github.com/marcuwynu23/dataserve/internal/service"
 	"github.com/marcuwynu23/dataserve/internal/storage"
 	"github.com/marcuwynu23/dataserve/internal/watcher"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
+
+// newRegistry registers every supported parser.
+func newRegistry() *parser.Registry {
+	reg := parser.NewRegistry()
+	reg.Register(jsonparser.New())
+	reg.Register(csvparser.New())
+	reg.Register(tsvparser.New())
+	reg.Register(xmlparser.New())
+	reg.Register(yamlparser.New())
+	reg.Register(tomlparser.New())
+	reg.Register(iniparser.New())
+	return reg
+}
 
 // sampleDataDir resolves the repository's sample datasets.
 func sampleDataDir(t *testing.T) string {
@@ -36,8 +55,7 @@ func sampleDataDir(t *testing.T) string {
 func buildApp(t *testing.T, cfg *config.Config) (*service.Service, http.Handler) {
 	t.Helper()
 	logger := slog.New(slog.NewTextHandler(io.Discard, nil))
-	reg := parser.NewRegistry()
-	reg.Register(jsonparser.New())
+	reg := newRegistry()
 
 	ld := loader.New(reg, logger)
 	st := storage.New()
@@ -69,8 +87,8 @@ func TestEndToEndDirectoryMode(t *testing.T) {
 	}
 	require.NoError(t, json.Unmarshal(rec.Body.Bytes(), &meta))
 	assert.Equal(t, "directory", meta.Mode)
-	assert.Equal(t, []string{".json"}, meta.Formats)
-	assert.Equal(t, []string{"/config", "/products", "/users"}, meta.Available)
+	assert.Equal(t, []string{".csv", ".ini", ".json", ".toml", ".tsv", ".xml", ".yaml", ".yml"}, meta.Formats)
+	assert.Equal(t, []string{"/app", "/config", "/countries", "/employees", "/mapping", "/products", "/report", "/settings", "/users"}, meta.Available)
 
 	// Object dataset.
 	rec = doGet(t, h, "/config")
@@ -92,6 +110,31 @@ func TestEndToEndDirectoryMode(t *testing.T) {
 	require.Equal(t, http.StatusOK, rec.Code)
 	require.NoError(t, json.Unmarshal(rec.Body.Bytes(), &users))
 	assert.Len(t, users, 3)
+
+	// CSV dataset with typed scalars and querying.
+	rec = doGet(t, h, "/employees?department=Engineering&sort=-salary")
+	require.Equal(t, http.StatusOK, rec.Code)
+	var employees []map[string]any
+	require.NoError(t, json.Unmarshal(rec.Body.Bytes(), &employees))
+	require.Len(t, employees, 2)
+	assert.Equal(t, float64(110000), employees[0]["salary"])
+	assert.Equal(t, true, employees[0]["active"])
+
+	// TOML, YAML and INI datasets.
+	rec = doGet(t, h, "/app")
+	require.Equal(t, http.StatusOK, rec.Code)
+	require.NoError(t, json.Unmarshal(rec.Body.Bytes(), &cfgJSON))
+	assert.Equal(t, "dataserve", cfgJSON["name"])
+
+	rec = doGet(t, h, "/mapping")
+	require.Equal(t, http.StatusOK, rec.Code)
+	require.NoError(t, json.Unmarshal(rec.Body.Bytes(), &cfgJSON))
+	assert.Equal(t, "dataserve", cfgJSON["service"])
+
+	rec = doGet(t, h, "/settings")
+	require.Equal(t, http.StatusOK, rec.Code)
+	require.NoError(t, json.Unmarshal(rec.Body.Bytes(), &cfgJSON))
+	assert.Equal(t, float64(8080), cfgJSON["server"].(map[string]any)["port"])
 }
 
 func TestEndToEndSingleFileMode(t *testing.T) {

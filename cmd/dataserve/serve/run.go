@@ -15,7 +15,13 @@ import (
 	"github.com/marcuwynu23/dataserve/internal/loader"
 	"github.com/marcuwynu23/dataserve/internal/metrics"
 	"github.com/marcuwynu23/dataserve/internal/parser"
+	"github.com/marcuwynu23/dataserve/internal/parser/csv"
+	"github.com/marcuwynu23/dataserve/internal/parser/ini"
 	"github.com/marcuwynu23/dataserve/internal/parser/json"
+	"github.com/marcuwynu23/dataserve/internal/parser/toml"
+	"github.com/marcuwynu23/dataserve/internal/parser/tsv"
+	"github.com/marcuwynu23/dataserve/internal/parser/xml"
+	"github.com/marcuwynu23/dataserve/internal/parser/yaml"
 	"github.com/marcuwynu23/dataserve/internal/service"
 	"github.com/marcuwynu23/dataserve/internal/storage"
 	"github.com/marcuwynu23/dataserve/internal/watcher"
@@ -38,6 +44,12 @@ func run(ctx context.Context, cfg *config.Config) error {
 
 	registry := parser.NewRegistry()
 	registry.Register(json.New())
+	registry.Register(csv.New())
+	registry.Register(tsv.New())
+	registry.Register(xml.New())
+	registry.Register(yaml.New())
+	registry.Register(toml.New())
+	registry.Register(ini.New())
 
 	ld := loader.New(registry, logger)
 	st := storage.New()
