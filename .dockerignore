@@ -1,0 +1,6 @@
+bin/
+.git/
+tests/
+*.md
+Dockerfile
+Makefile
