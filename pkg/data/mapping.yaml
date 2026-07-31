@@ -1,4 +1,4 @@
-service: dataserve
+service: dataflute
 version: 1.0.0
 features:
   - filter

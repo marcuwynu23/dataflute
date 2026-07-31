@@ -1,4 +1,4 @@
-name = "dataserve"
+name = "dataflute"
 version = "1.0.0"
 
 [server]
