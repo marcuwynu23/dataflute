@@ -1,0 +1,7 @@
+[
+  {"id": 101, "name": "Laptop Pro", "category": "electronics", "price": 1299.99, "in_stock": true},
+  {"id": 102, "name": "Wireless Mouse", "category": "electronics", "price": 24.5, "in_stock": true},
+  {"id": 103, "name": "Desk Lamp", "category": "home", "price": 39.0, "in_stock": false},
+  {"id": 104, "name": "Mechanical Keyboard", "category": "electronics", "price": 89.99, "in_stock": true},
+  {"id": 105, "name": "Coffee Mug", "category": "kitchen", "price": 12.75, "in_stock": true}
+]

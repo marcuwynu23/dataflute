@@ -1,0 +1,7 @@
+{
+  "name": "dataserve",
+  "version": "1.0.0",
+  "license": "MIT",
+  "read_only": true,
+  "formats": ["json"]
+}
