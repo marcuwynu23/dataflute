@@ -39,8 +39,8 @@ jobs:
             [ "$goos" = "windows" ] && ext=".exe"
             echo "Building $goos/$goarch..."
             GOOS=$goos GOARCH=$goarch go build \
-              -ldflags "-w -X github.com/marcuwynu23/dataflute/cmd.version=${VERSION}" \
-              -o "dist/${APP_NAME}-${goos}-${goarch}${ext}" .
+              -ldflags "-w" \
+              -o "dist/${APP_NAME}-${goos}-${goarch}${ext}" ./cmd/dataflute
           done
           ls -la dist/
 
