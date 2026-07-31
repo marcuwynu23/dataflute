@@ -5,12 +5,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/marcuwynu23/dataserve/internal/config"
-	"github.com/marcuwynu23/dataserve/internal/loader"
-	"github.com/marcuwynu23/dataserve/internal/metrics"
-	"github.com/marcuwynu23/dataserve/internal/models"
-	"github.com/marcuwynu23/dataserve/internal/parser"
-	"github.com/marcuwynu23/dataserve/internal/storage"
+	"github.com/marcuwynu23/dataflute/internal/config"
+	"github.com/marcuwynu23/dataflute/internal/loader"
+	"github.com/marcuwynu23/dataflute/internal/metrics"
+	"github.com/marcuwynu23/dataflute/internal/models"
+	"github.com/marcuwynu23/dataflute/internal/parser"
+	"github.com/marcuwynu23/dataflute/internal/storage"
 )
 
 // Service is the application layer: it owns the datasets and exposes the

@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/marcuwynu23/dataserve/internal/parser/scalar"
+	"github.com/marcuwynu23/dataflute/internal/parser/scalar"
 )
 
 // Parser decodes delimiter-separated values into an array of objects,

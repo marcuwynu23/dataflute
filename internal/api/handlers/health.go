@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/marcuwynu23/dataserve/internal/api/response"
+	"github.com/marcuwynu23/dataflute/internal/api/response"
 )
 
 // HealthHandler serves the GET /health endpoint.

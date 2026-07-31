@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/marcuwynu23/dataserve/internal/api/response"
-	"github.com/marcuwynu23/dataserve/internal/service"
-	"github.com/marcuwynu23/dataserve/internal/utils"
+	"github.com/marcuwynu23/dataflute/internal/api/response"
+	"github.com/marcuwynu23/dataflute/internal/service"
+	"github.com/marcuwynu23/dataflute/internal/utils"
 )
 
 // DatasetHandler serves individual datasets.

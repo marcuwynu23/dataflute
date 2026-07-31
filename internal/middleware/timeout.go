@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/marcuwynu23/dataserve/internal/api/response"
+	"github.com/marcuwynu23/dataflute/internal/api/response"
 )
 
 // Timeout aborts requests that exceed the given duration with a 504

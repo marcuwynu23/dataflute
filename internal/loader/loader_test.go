@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/marcuwynu23/dataserve/internal/parser"
-	jsonparser "github.com/marcuwynu23/dataserve/internal/parser/json"
+	"github.com/marcuwynu23/dataflute/internal/parser"
+	jsonparser "github.com/marcuwynu23/dataflute/internal/parser/json"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

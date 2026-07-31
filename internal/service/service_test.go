@@ -8,12 +8,12 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/marcuwynu23/dataserve/internal/config"
-	"github.com/marcuwynu23/dataserve/internal/loader"
-	"github.com/marcuwynu23/dataserve/internal/metrics"
-	"github.com/marcuwynu23/dataserve/internal/parser"
-	jsonparser "github.com/marcuwynu23/dataserve/internal/parser/json"
-	"github.com/marcuwynu23/dataserve/internal/storage"
+	"github.com/marcuwynu23/dataflute/internal/config"
+	"github.com/marcuwynu23/dataflute/internal/loader"
+	"github.com/marcuwynu23/dataflute/internal/metrics"
+	"github.com/marcuwynu23/dataflute/internal/parser"
+	jsonparser "github.com/marcuwynu23/dataflute/internal/parser/json"
+	"github.com/marcuwynu23/dataflute/internal/storage"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

@@ -3,7 +3,7 @@ package storage
 import (
 	"testing"
 
-	"github.com/marcuwynu23/dataserve/internal/models"
+	"github.com/marcuwynu23/dataflute/internal/models"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

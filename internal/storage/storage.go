@@ -5,7 +5,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/marcuwynu23/dataserve/internal/models"
+	"github.com/marcuwynu23/dataflute/internal/models"
 )
 
 // Storage holds datasets in memory and provides thread-safe access.

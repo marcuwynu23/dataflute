@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/marcuwynu23/dataserve/cmd/dataserve/serve"
+	"github.com/marcuwynu23/dataflute/cmd/dataflute/serve"
 )
 
 func main() {

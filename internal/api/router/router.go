@@ -6,10 +6,10 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/marcuwynu23/dataserve/internal/api/handlers"
-	"github.com/marcuwynu23/dataserve/internal/api/response"
-	"github.com/marcuwynu23/dataserve/internal/middleware"
-	"github.com/marcuwynu23/dataserve/internal/service"
+	"github.com/marcuwynu23/dataflute/internal/api/handlers"
+	"github.com/marcuwynu23/dataflute/internal/api/response"
+	"github.com/marcuwynu23/dataflute/internal/middleware"
+	"github.com/marcuwynu23/dataflute/internal/service"
 )
 
 // New builds the HTTP handler for the application, wiring up middleware

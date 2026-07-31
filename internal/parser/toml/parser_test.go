@@ -22,7 +22,7 @@ func TestExtensions(t *testing.T) {
 
 func TestParse(t *testing.T) {
 	path := writeFile(t, "app.toml", `
-name = "dataserve"
+name = "dataflute"
 version = "1.0.0"
 
 [server]
@@ -34,7 +34,7 @@ pretty = true
 	got, err := New().Parse(path)
 	require.NoError(t, err)
 	assert.Equal(t, map[string]any{
-		"name":    "dataserve",
+		"name":    "dataflute",
 		"version": "1.0.0",
 		"server": map[string]any{
 			"host":   "0.0.0.0",

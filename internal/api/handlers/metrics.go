@@ -3,8 +3,8 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/marcuwynu23/dataserve/internal/api/response"
-	"github.com/marcuwynu23/dataserve/internal/service"
+	"github.com/marcuwynu23/dataflute/internal/api/response"
+	"github.com/marcuwynu23/dataflute/internal/service"
 )
 
 // MetricsHandler serves the GET /metrics endpoint.

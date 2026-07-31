@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/marcuwynu23/dataserve/internal/models"
-	"github.com/marcuwynu23/dataserve/internal/parser"
+	"github.com/marcuwynu23/dataflute/internal/models"
+	"github.com/marcuwynu23/dataflute/internal/parser"
 )
 
 // Loader loads data files into in-memory datasets using a parser registry.

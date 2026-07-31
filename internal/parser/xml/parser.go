@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/marcuwynu23/dataserve/internal/parser/scalar"
+	"github.com/marcuwynu23/dataflute/internal/parser/scalar"
 )
 
 // Parser decodes XML documents into generic, JSON-friendly values.

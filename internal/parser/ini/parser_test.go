@@ -50,12 +50,12 @@ max_connections = 100
 }
 
 func TestParseTopLevelKeys(t *testing.T) {
-	path := writeFile(t, "global.ini", "name = dataserve\nversion = 1.0.0\n")
+	path := writeFile(t, "global.ini", "name = dataflute\nversion = 1.0.0\n")
 
 	got, err := New().Parse(path)
 	require.NoError(t, err)
 	assert.Equal(t, map[string]any{
-		"name":    "dataserve",
+		"name":    "dataflute",
 		"version": "1.0.0",
 	}, got)
 }

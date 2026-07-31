@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"github.com/fsnotify/fsnotify"
-	"github.com/marcuwynu23/dataserve/internal/config"
-	"github.com/marcuwynu23/dataserve/internal/parser"
+	"github.com/marcuwynu23/dataflute/internal/config"
+	"github.com/marcuwynu23/dataflute/internal/parser"
 )
 
 // Handler is the subset of Service operations the watcher needs.

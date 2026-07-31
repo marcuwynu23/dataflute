@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/marcuwynu23/dataserve/internal/parser/scalar"
+	"github.com/marcuwynu23/dataflute/internal/parser/scalar"
 )
 
 // Parser decodes INI files into a generic object.

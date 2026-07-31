@@ -12,21 +12,21 @@ import (
 	"testing"
 	"time"
 
-	"github.com/marcuwynu23/dataserve/internal/api/router"
-	"github.com/marcuwynu23/dataserve/internal/config"
-	"github.com/marcuwynu23/dataserve/internal/loader"
-	"github.com/marcuwynu23/dataserve/internal/metrics"
-	"github.com/marcuwynu23/dataserve/internal/parser"
-	csvparser "github.com/marcuwynu23/dataserve/internal/parser/csv"
-	iniparser "github.com/marcuwynu23/dataserve/internal/parser/ini"
-	jsonparser "github.com/marcuwynu23/dataserve/internal/parser/json"
-	tomlparser "github.com/marcuwynu23/dataserve/internal/parser/toml"
-	tsvparser "github.com/marcuwynu23/dataserve/internal/parser/tsv"
-	xmlparser "github.com/marcuwynu23/dataserve/internal/parser/xml"
-	yamlparser "github.com/marcuwynu23/dataserve/internal/parser/yaml"
-	"github.com/marcuwynu23/dataserve/internal/service"
-	"github.com/marcuwynu23/dataserve/internal/storage"
-	"github.com/marcuwynu23/dataserve/internal/watcher"
+	"github.com/marcuwynu23/dataflute/internal/api/router"
+	"github.com/marcuwynu23/dataflute/internal/config"
+	"github.com/marcuwynu23/dataflute/internal/loader"
+	"github.com/marcuwynu23/dataflute/internal/metrics"
+	"github.com/marcuwynu23/dataflute/internal/parser"
+	csvparser "github.com/marcuwynu23/dataflute/internal/parser/csv"
+	iniparser "github.com/marcuwynu23/dataflute/internal/parser/ini"
+	jsonparser "github.com/marcuwynu23/dataflute/internal/parser/json"
+	tomlparser "github.com/marcuwynu23/dataflute/internal/parser/toml"
+	tsvparser "github.com/marcuwynu23/dataflute/internal/parser/tsv"
+	xmlparser "github.com/marcuwynu23/dataflute/internal/parser/xml"
+	yamlparser "github.com/marcuwynu23/dataflute/internal/parser/yaml"
+	"github.com/marcuwynu23/dataflute/internal/service"
+	"github.com/marcuwynu23/dataflute/internal/storage"
+	"github.com/marcuwynu23/dataflute/internal/watcher"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -124,12 +124,12 @@ func TestEndToEndDirectoryMode(t *testing.T) {
 	rec = doGet(t, h, "/app")
 	require.Equal(t, http.StatusOK, rec.Code)
 	require.NoError(t, json.Unmarshal(rec.Body.Bytes(), &cfgJSON))
-	assert.Equal(t, "dataserve", cfgJSON["name"])
+	assert.Equal(t, "dataflute", cfgJSON["name"])
 
 	rec = doGet(t, h, "/mapping")
 	require.Equal(t, http.StatusOK, rec.Code)
 	require.NoError(t, json.Unmarshal(rec.Body.Bytes(), &cfgJSON))
-	assert.Equal(t, "dataserve", cfgJSON["service"])
+	assert.Equal(t, "dataflute", cfgJSON["service"])
 
 	rec = doGet(t, h, "/settings")
 	require.Equal(t, http.StatusOK, rec.Code)

@@ -21,12 +21,12 @@ func TestExtensions(t *testing.T) {
 }
 
 func TestParseObject(t *testing.T) {
-	path := writeFile(t, "config.yaml", "service: dataserve\nversion: 1.0.0\n")
+	path := writeFile(t, "config.yaml", "service: dataflute\nversion: 1.0.0\n")
 
 	got, err := New().Parse(path)
 	require.NoError(t, err)
 	assert.Equal(t, map[string]any{
-		"service": "dataserve",
+		"service": "dataflute",
 		"version": "1.0.0",
 	}, got)
 }

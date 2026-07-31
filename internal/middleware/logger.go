@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/marcuwynu23/dataserve/internal/metrics"
+	"github.com/marcuwynu23/dataflute/internal/metrics"
 )
 
 // RequestLogging logs every request and updates the request counter.

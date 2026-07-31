@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/marcuwynu23/dataserve/internal/metrics"
+	"github.com/marcuwynu23/dataflute/internal/metrics"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

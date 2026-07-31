@@ -1,6 +1,6 @@
 package tsv
 
-import "github.com/marcuwynu23/dataserve/internal/parser/csv"
+import "github.com/marcuwynu23/dataflute/internal/parser/csv"
 
 // Parser decodes tab-separated values into an array of objects.
 type Parser struct {

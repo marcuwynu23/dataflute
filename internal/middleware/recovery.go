@@ -4,7 +4,7 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/marcuwynu23/dataserve/internal/api/response"
+	"github.com/marcuwynu23/dataflute/internal/api/response"
 )
 
 // Recovery recovers from panics in downstream handlers, logs them, and

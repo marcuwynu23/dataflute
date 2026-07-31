@@ -5,7 +5,7 @@ import (
 	"os"
 	"os/signal"
 
-	"github.com/marcuwynu23/dataserve/internal/config"
+	"github.com/marcuwynu23/dataflute/internal/config"
 	"github.com/spf13/cobra"
 )
 
@@ -18,11 +18,11 @@ var (
 	pretty   bool
 )
 
-// rootCmd is the root command of the dataserve CLI.
+// rootCmd is the root command of the dataflute CLI.
 var rootCmd = &cobra.Command{
-	Use:   "dataserve",
+	Use:   "dataflute",
 	Short: "Expose local data files as read-only REST APIs",
-	Long: `dataserve serves local data files (JSON, YAML, CSV, ...) as
+	Long: `dataflute serves local data files (JSON, YAML, CSV, ...) as
 read-only REST APIs. Use "serve" to start the HTTP server.`,
 }
 
