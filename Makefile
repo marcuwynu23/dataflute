@@ -1,5 +1,5 @@
 GO       ?= go
-BINARY   := bin/dataserve
+BINARY   := bin/dataflute
 PACKAGES := ./cmd/... ./internal/... ./tests/...
 
 .PHONY: all build run test test-race lint fmt clean install docker
@@ -7,10 +7,10 @@ PACKAGES := ./cmd/... ./internal/... ./tests/...
 all: fmt lint test build
 
 build:
-	$(GO) build -o $(BINARY) ./cmd/dataserve
+	$(GO) build -o $(BINARY) ./cmd/dataflute
 
 run:
-	$(GO) run ./cmd/dataserve serve --data ./pkg/data --host 0.0.0.0 --port 8080
+	$(GO) run ./cmd/dataflute serve --data ./pkg/data --host 0.0.0.0 --port 8080
 
 test:
 	$(GO) test -cover $(PACKAGES)
@@ -29,7 +29,7 @@ clean:
 	rm -rf bin
 
 install:
-	$(GO) install ./cmd/dataserve
+	$(GO) install ./cmd/dataflute
 
 docker:
-	docker build -t dataserve .
+	docker build -t dataflute .
