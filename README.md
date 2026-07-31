@@ -13,7 +13,7 @@
 
 </div>
 
-`dataflute` is a production-ready, read-only REST API server for local data files.
+`dataflute` is a development tool that serves local data files as read-only REST APIs.
 Point it at a directory (or a single file) and it exposes each supported dataset as a
 JSON endpoint with filtering, sorting, pagination, field selection, and search — with
 automatic hot-reload when files change.
